@@ -4,6 +4,7 @@ const userModels = require('../models/user')
 const cloudinary = require('cloudinary').v2
 const bcrypt = require('bcryptjs')
 const {v4: uuidv4} = require('uuid')
+const { generateToken, generateRefreshToken } = require('../helpers/auth')
 
 
 cloudinary.config({ 
@@ -44,6 +45,40 @@ const insertDataUser = async(req,res) => {
     }
 }
 
+const login = async(req,res) => {
+    const {email, password} = req.body
+    const {rows: [dataUser]} = await userModels.findUserEmail(email)
+    if(!dataUser){
+        return response(res, null, 'failed', 403, 'login failed! wrong email or password')
+    }
+    // console.log(dataUser);
+    const validationPassword = bcrypt.compareSync(password, dataUser.password)
+    console.log(validationPassword);
+    if(!validationPassword){
+        return response(res, null, 'failed', 403, 'login failed! wrong email or password')
+    }
+    let payload = {
+        email: dataUser.email,
+        password: dataUser.password,
+        role: dataUser.role
+    }
+        dataUser.token = generateToken(payload)
+        dataUser.refreshToken= generateRefreshToken(payload)
+        response(res, dataUser, 'success', 200, 'login success')
+}
+
+const profile = async(req,res) => {
+    try {
+        const email = req.payload.email
+        // console.log(email);
+        const { rows: [user] } = await userModels.findUserEmail(email)
+        response(res, user, 'suuccess', 200, 'get profile success')
+    } catch (error) {
+        console.log(error);
+        res.json({message: 'error', error})
+    }
+}
+
 const updateDataUser = async(req,res) => {
     try {
         const {data} = await userModels.updateData(req.params.id, req.body)
@@ -68,5 +103,7 @@ module.exports = {
     getDataUser,
     insertDataUser,
     updateDataUser,
-    deleteDataUser
+    deleteDataUser,
+    login,
+    profile
 }
