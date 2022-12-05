@@ -15,8 +15,7 @@ CREATE TABLE users(id VARCHAR PRIMARY KEY,
 --     video VARCHAR);
 
 CREATE TABLE recipes(id SERIAL PRIMARY KEY, 
-    userID VARCHAR, 
-    name VARCHAR, 
+    userID VARCHAR,
     tittle VARCHAR, 
     ingredients VARCHAR, 
     photo VARCHAR);
