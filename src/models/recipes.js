@@ -14,7 +14,7 @@ const getDataRecipe = ({search, limit, offset, sortBy, sortList}) => {
 }
 
 const getDetailRecipes = (id) => {
-    return pool.query(`SELECT recipes.*, users.name AS user FROM users INNER JOIN category ON users.userid = recipes.id WHERE recipes.id='${id}'`)
+    return pool.query(`SELECT recipes.*, users.name AS user FROM users INNER JOIN recips ON users.userid = recipes.id WHERE recipes.id='${id}'`)
 }
 
 const insertDataRecipe = (data) => {
