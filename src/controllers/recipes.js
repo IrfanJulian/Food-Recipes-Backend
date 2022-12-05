@@ -11,8 +11,24 @@ cloudinary.config({
 
   const getDataRecipe = async(req,res) => {
     try {
-        const { rows } = await recipeModels.getDataRecipe()
-        response(res, rows, 'success', 200, 'Add Recipe Success')
+        const search = req.query.search || '';
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const offset = (page - 1) * limit || 0;
+        const sortBy = req.query.sortBy || 'id';
+        const sortList = req.query.sortList || 'asc';
+        const { rows } = await recipeModels.getDataRecipe({search, page, limit, offset, sortBy, sortList})
+
+        const {rows: [count]} = await recipeModels.countDataRecipe()
+        const totalData = parseInt(count.total_products)
+        const totalPage = Math.ceil(totalData / limit)
+        const pagination = {
+          currentPage: page,
+          limit,
+          totalData,
+          totalPage
+        }
+        response(res, rows, 'success', 200, 'Add Recipe Success', pagination)
     } catch (error) {
         console.log(error);
         res.send({ message: 'error' })
@@ -23,8 +39,9 @@ cloudinary.config({
     try {
       const { userID, name, tittle, ingredients } = req.body
       const photo = req.file
-      const image = await cloudinary.uploader.upload(photo.path, { folder: 'Recipes/Food/Image' })
-      const dataRecipe = { userID, name, tittle, ingredients, photo: [image.secure_url] }
+      console.log(req.file);
+      // const image = await cloudinary.uploader.upload(photo.path, { folder: 'Recipes/Food/Image' })
+      const dataRecipe = { userID, name, tittle, ingredients, photo}
       const result = await recipeModels.insertDataRecipe(dataRecipe)
       response(res, result.data, 'success', 200, 'Insert Data Success')
     } catch (error) {
@@ -32,6 +49,19 @@ cloudinary.config({
       res.send({message: 'error'})
     }
   }
+  // const insertDataRecipe = async(req,res) => {
+  //   try {
+  //     const { userID, name, tittle, ingredients } = req.body
+  //     const photo = req.file
+  //     const image = await cloudinary.uploader.upload(photo.path, { folder: 'Recipes/Food/Image' })
+  //     const dataRecipe = { userID, name, tittle, ingredients, photo: [image.secure_url] }
+  //     const result = await recipeModels.insertDataRecipe(dataRecipe)
+  //     response(res, result.data, 'success', 200, 'Insert Data Success')
+  //   } catch (error) {
+  //     console.log(error);
+  //     res.send({message: 'error'})
+  //   }
+  // }
 
   const deleteDataRecipe = async(req,res) => {
     try {

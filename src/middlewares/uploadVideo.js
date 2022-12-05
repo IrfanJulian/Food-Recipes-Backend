@@ -1,19 +1,33 @@
+const createError = require('http-errors')
 const multer = require('multer')
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './videos')
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9)
+    cb(null, file.fieldname + '-' + uniqueSuffix + '-' + file.originalname)
+  }
+})
 
 const videoUpload = multer({
-    storage: multer.diskStorage({}),
-    limits: {
-        fileSize: 20000000 // 10000000 Bytes = 10 MB
-    },
-    fileFilter(req, file, cb) {
-      // upload only mp4 and mkv format
-      if (file.mimetype == 'video/mp4' || file.mimetype == 'video/mkv') { 
-        cb(null, true);
-      } else {
-        cb(null, false);
-        return cb(new Error('Just allowed mp4 and mkv type'));
-      }
-   },
-});
+  storage,
+  limits: {
+    fileSize: 1024 * 1024 * 30 // Accept files to 2mb only
+  },
+  fileFilter: (req, file, cb) => {
+    if (
+      file.mimetype === 'image/png' ||
+      file.mimetype === 'image/jpg' ||
+      file.mimetype === 'video/mp4' ||
+      file.mimetype === 'image/jpeg'
+    ) {
+      cb(null, true)
+    } else {
+      cb(null, false)
+      return cb(createError(500, 'Image Allowed Only JPG/PNG'))
+    }
+  }
+})
 
 module.exports = videoUpload
