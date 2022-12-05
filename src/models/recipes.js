@@ -18,8 +18,8 @@ const getDetailRecipes = (id) => {
 }
 
 const insertDataRecipe = (data) => {
-    const { userID, name, tittle, ingredients, photo } = data
-    return pool.query(`INSERT INTO recipes(userID, name, tittle, ingredients, photo)VALUES('${userID}', '${name}', '${tittle}', '${ingredients}', '${photo}')`)
+    const { userID, tittle, ingredients, photo } = data
+    return pool.query(`INSERT INTO recipes(userID, tittle, ingredients, photo)VALUES('${userID}', '${tittle}', '${ingredients}', '${photo}')`)
 }
 
 const deleteDataRecipe = (id) => {
