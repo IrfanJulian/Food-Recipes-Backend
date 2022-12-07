@@ -2,7 +2,7 @@ const pool = require('../configs/db')
 
 const getDataRecipe = ({search, limit, offset, sortBy, sortList}) => {
     return new Promise((resolve, reject)=> {
-        pool.query(`SELECT * FROM recipes WHERE (name) ILIKE ('%${search}%') ORDER BY ${sortBy} ${sortList} LIMIT ${limit} OFFSET ${offset}`, (err, result)=>{
+        pool.query(`SELECT * FROM recipes WHERE (tittle) ILIKE ('%${search}%') ORDER BY ${sortBy} ${sortList} LIMIT ${limit} OFFSET ${offset}`, (err, result)=>{
             if(!err){
                 resolve(result)
             }else{

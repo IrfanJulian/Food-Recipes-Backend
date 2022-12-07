@@ -60,7 +60,7 @@ const login = async(req,res) => {
     let payload = {
         email: dataUser.email,
         password: dataUser.password,
-        role: dataUser.role
+        photo: dataUser.photo
     }
         dataUser.token = generateToken(payload)
         dataUser.refreshToken= generateRefreshToken(payload)
