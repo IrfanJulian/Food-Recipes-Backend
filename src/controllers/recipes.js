@@ -39,9 +39,10 @@ cloudinary.config({
     try {
       const { userID, tittle, ingredients } = req.body
       const photo = req.file
-      console.log(req.file);
+      const image = await cloudinary.uploader.upload(photo.path, { folder: 'Recipes/Food' })
+      // console.log(req.file);
       // const image = await cloudinary.uploader.upload(photo.path, { folder: 'Recipes/Food/Image' })
-      const dataRecipe = { userID, tittle, ingredients, photo}
+      const dataRecipe = { userID, tittle, ingredients, photo: [image.secure_url]}
       const result = await recipeModels.insertDataRecipe(dataRecipe)
       response(res, result.data, 'success', 200, 'Insert Data Success')
     } catch (error) {
