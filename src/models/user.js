@@ -9,8 +9,8 @@ const findUserEmail = (email) => {
 }
 
 const insertData = (data) => {
-    const { id, name, phone, email, password, new_password, photo } = data
-    return pool.query(`INSERT INTO users(id, name, phone, email, password, new_password, photo)VALUES('${id}', '${name}', ${phone}, '${email}', '${password}', '${new_password}', '${photo}')`)
+    const { id, name, phone, email, password, new_password } = data
+    return pool.query(`INSERT INTO users(id, name, phone, email, password, new_password)VALUES('${id}', '${name}', ${phone}, '${email}', '${password}', '${new_password}')`)
 }
 
 const updateData = (id, data) => {
@@ -19,7 +19,7 @@ const updateData = (id, data) => {
 }
 
 const deleteData = (id) => {
-    return pool.query(`DELETE FROM users WHERE id=${id}`)
+    return pool.query(`DELETE FROM users WHERE id='${id}'`)
 }
 
 module.exports = {
