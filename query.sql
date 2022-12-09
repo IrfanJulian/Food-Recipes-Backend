@@ -2,8 +2,7 @@ CREATE TABLE users(id VARCHAR PRIMARY KEY,
     name VARCHAR, 
     phone VARCHAR, 
     email VARCHAR, 
-    password VARCHAR, 
-    new_password VARCHAR, 
+    password VARCHAR,
     photo VARCHAR NULL);
 
 -- CREATE TABLE recipes(id SERIAL PRIMARY KEY, 
