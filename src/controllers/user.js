@@ -29,7 +29,6 @@ const insertDataUser = async(req,res) => {
         const { name, phone, email, password, new_password } = req.body
         // const image = await cloudinary.uploader.upload(photo.path, { folder: 'Recipes/User' })
         if(password === new_password){
-
             const salt = bcrypt.genSaltSync(10);
             const passwordHash = bcrypt.hashSync(password, salt);
             const filterEmail = await userModels.findUserEmail(email);
