@@ -24,15 +24,15 @@ const getDataUser = async(req,res)=> {
     }
 }
 
-const myRecipes = async(req,res)=> {
-    try {
-        const id = req.params.id
-        const result = await userModels.myRecipe(id)
-        console.log(result);
-    } catch (error) {
-        console.log(error);
-    }
-}
+// const myRecipes = async(req,res)=> {
+//     try {
+//         const id = req.params.id
+//         const result = await userModels.myRecipe(id)
+//         console.log(result);
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
 
 const insertDataUser = async(req,res) => {
     try {
@@ -80,7 +80,6 @@ const login = async(req,res) => {
 const profile = async(req,res) => {
     try {
         const email = req.payload.email
-        // console.log(email);
         const { rows: [user] } = await userModels.findUserEmail(email)
         response(res, user, 'suuccess', 200, 'get profile success')
     } catch (error) {
@@ -128,5 +127,5 @@ module.exports = {
     deleteDataUser,
     login,
     profile,
-    myRecipes
+    // myRecipes
 }

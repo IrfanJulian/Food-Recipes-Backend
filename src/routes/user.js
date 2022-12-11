@@ -6,7 +6,7 @@ const { protect } = require('../middlewares/auth')
 
 
 router.get('/', userController.getDataUser)
-router.get('/:id', protect, userController.myRecipes)
+// router.get('/:id', protect, userController.myRecipes)
 router.post('/login', userController.login)
 router.post('/register', upload.single('photo'), userController.insertDataUser)
 router.get('/profile', protect, userController.profile)
