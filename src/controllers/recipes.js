@@ -13,7 +13,7 @@ cloudinary.config({
     try {
         const search = req.query.search || '';
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 5;
+        const limit = parseInt(req.query.limit) || 6;
         const offset = (page - 1) * limit || 0;
         const sortBy = req.query.sortBy || 'id';
         const sortList = req.query.sortList || 'asc';
