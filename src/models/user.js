@@ -13,6 +13,10 @@ const insertData = (data) => {
     return pool.query(`INSERT INTO users(id, name, phone, email, password)VALUES('${id}', '${name}', ${phone}, '${email}', '${password}')`)
 }
 
+const myRecipe = (id) => {
+    return pool.query(`SELECT users.*, recipes.tittle AS recipes FROM users INNER JOIN recipes ON users.id=recipes.userID WHERE users.id='${id}'`)
+}
+
 const updateData = (data) => {
     const { id, photo } = data
     return pool.query(`UPDATE users SET photo='${photo}' WHERE id='${id}'`)
@@ -27,5 +31,6 @@ module.exports = {
     insertData,
     updateData,
     deleteData,
-    findUserEmail
+    findUserEmail,
+    myRecipe
 }

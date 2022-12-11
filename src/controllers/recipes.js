@@ -35,6 +35,16 @@ cloudinary.config({
     }
   }
 
+  const getDetailRecipes = async(req,res) => {
+    try {
+      const id = req.params.id
+      const {rows} = await recipeModels.getDetailRecipes(id)
+      response(res, rows, 'suuccess', 200, 'Get Data by ID success')
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const insertDataRecipe = async(req,res) => {
     try {
       const { userID, tittle, ingredients } = req.body
@@ -78,5 +88,6 @@ cloudinary.config({
   module.exports = {
     getDataRecipe,
     insertDataRecipe,
-    deleteDataRecipe
+    deleteDataRecipe,
+    getDetailRecipes
   }

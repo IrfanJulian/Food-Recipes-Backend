@@ -24,6 +24,16 @@ const getDataUser = async(req,res)=> {
     }
 }
 
+const myRecipes = async(req,res)=> {
+    try {
+        const id = req.params.id
+        const result = await userModels.myRecipe(id)
+        console.log(result);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 const insertDataUser = async(req,res) => {
     try {
         const { name, phone, email, password } = req.body
@@ -117,5 +127,6 @@ module.exports = {
     updateDataUser,
     deleteDataUser,
     login,
-    profile
+    profile,
+    myRecipes
 }
