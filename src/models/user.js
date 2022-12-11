@@ -13,9 +13,9 @@ const insertData = (data) => {
     return pool.query(`INSERT INTO users(id, name, phone, email, password)VALUES('${id}', '${name}', ${phone}, '${email}', '${password}')`)
 }
 
-const updateData = (id, data) => {
-    const { name, phone, email, password, photo } = data
-    return pool.query(`UPDATE users SET name='${name}', phone='${phone}', email='${email}', password='${password}', photo='${photo}' WHERE id=${id}`)
+const updateData = (data) => {
+    const { id, photo } = data
+    return pool.query(`UPDATE users SET photo='${photo}' WHERE id='${id}'`)
 }
 
 const deleteData = (id) => {

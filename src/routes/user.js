@@ -9,7 +9,7 @@ router.get('/', userController.getDataUser)
 router.post('/login', userController.login)
 router.post('/register', upload.single('photo'), userController.insertDataUser)
 router.get('/profile', protect, userController.profile)
-router.put('/:id', userController.updateDataUser)
+router.put('/:id', protect, upload.single('photo'), userController.updateDataUser)
 router.delete('/:id', userController.deleteDataUser)
 
 module.exports = router

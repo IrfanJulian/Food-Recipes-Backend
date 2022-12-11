@@ -26,9 +26,8 @@ const getDataUser = async(req,res)=> {
 
 const insertDataUser = async(req,res) => {
     try {
-        const { name, phone, email, password, new_password } = req.body
+        const { name, phone, email, password } = req.body
         // const image = await cloudinary.uploader.upload(photo.path, { folder: 'Recipes/User' })
-        if(password === new_password){
             const salt = bcrypt.genSaltSync(10);
             const passwordHash = bcrypt.hashSync(password, salt);
             const filterEmail = await userModels.findUserEmail(email);
@@ -39,9 +38,6 @@ const insertDataUser = async(req,res) => {
             }else{
                 res.send({message: 'Email is Already Exist'})
             }
-        }else{
-            res.send({message: 'check your password'})
-        }
     } catch (error) {
         console.log(error);
         res.send({message: 'error'})
@@ -61,6 +57,7 @@ const login = async(req,res) => {
         return response(res, null, 'failed', 403, 'login failed! wrong email or password')
     }
     let payload = {
+        id: dataUser.id,
         email: dataUser.email,
         password: dataUser.password,
         photo: dataUser.photo
@@ -84,8 +81,20 @@ const profile = async(req,res) => {
 
 const updateDataUser = async(req,res) => {
     try {
-        const {data} = await userModels.updateData(req.params.id, req.body)
-        response(res, data, 'success', 200, 'Update Data Success')
+        const id = req.params.id
+        // console.log(id);
+        // const { name, phone, email, password } = req.body
+        // console.log(req.body);
+        const photo = req.file
+        const image = await cloudinary.uploader.upload(photo.path, { folder: 'Recipes/User' })
+        const data = {
+            id,
+            photo: image.secure_url
+        }
+        console.log(data);
+        const result = await userModels.updateData(data)
+        console.log(result);
+        response(res, null, 'success', 200, 'Update Data Success')
     } catch (error) {
         console.log(error);
         res.send({message: 'error'})
