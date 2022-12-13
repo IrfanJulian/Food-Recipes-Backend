@@ -28,7 +28,7 @@ cloudinary.config({
           totalData,
           totalPage
         }
-        response(res, rows, 'success', 200, 'Add Recipe Success', pagination)
+        response(res, rows, 'success', 200, 'Get Data Recipe Success', pagination)
     } catch (error) {
         console.log(error);
         res.send({ message: 'error' })
