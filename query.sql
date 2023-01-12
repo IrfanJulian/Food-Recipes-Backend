@@ -21,4 +21,4 @@ CREATE TABLE recipes(id SERIAL PRIMARY KEY,
 
 INSERT INTO users(id, name, phone, email, password, new_password)VALUES('ba123saf456', 'Bambamss', '08123456789', 'bambams@gmail.com', 'abc123', 'abc123');
 
-INSERT INTO recipes(userID, name, tittle, ingredients, photo)VALUES('212', 'steak', 'delicious steak', 'salt garlic black pepper olive oil onion beef', 'photo1')
+INSERT INTO recipes(userID, tittle, ingredients, photo)VALUES('212', 'delicious steak', 'salt garlic black pepper olive oil onion beef', 'photo1')

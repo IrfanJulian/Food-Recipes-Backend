@@ -5,11 +5,11 @@ const upload = multer({
     storage: multer.diskStorage({}),
     fileFilter: (req, file, cb) => {
       // console.log('bentuk '+ req);
-      if (file.mimetype == 'image/png' || file.mimetype == 'image/jpg' || file.mimetype == 'image/jpeg' || file.mimetype == 'image/jfif') {
+      if (file.mimetype == 'image/png' || file.mimetype == 'image/jpg' || file.mimetype == 'image/jpeg' || file.mimetype == 'video/mp4' || file.mimtype == 'video/mkv' ) {
         cb(null, true);
       } else {
         cb(null, false);
-        return cb(new Error('Just allowed png and jpg type'));
+        return cb(new Error('Just allowed png, jpg, mp4, mkv type'));
       }
     },
 });

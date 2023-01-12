@@ -37,6 +37,7 @@ const getDataUser = async(req,res)=> {
 const insertDataUser = async(req,res) => {
     try {
         const { name, phone, email, password } = req.body
+        // console.log(req.body);
         // const image = await cloudinary.uploader.upload(photo.path, { folder: 'Recipes/User' })
             const salt = bcrypt.genSaltSync(10);
             const passwordHash = bcrypt.hashSync(password, salt);
@@ -62,7 +63,7 @@ const login = async(req,res) => {
     }
     // console.log(dataUser);
     const validationPassword = bcrypt.compareSync(password, dataUser.password)
-    console.log(validationPassword);
+    // console.log(validationPassword);
     if(!validationPassword){
         return response(res, null, 'failed', 403, 'login failed! wrong email or password')
     }

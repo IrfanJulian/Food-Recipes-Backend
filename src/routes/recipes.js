@@ -3,7 +3,6 @@ const router = express.Router()
 const recipeController = require('../controllers/recipes');
 const { protect } = require('../middlewares/auth');
 const upload = require('../middlewares/upload')
-// const upload = require('../middlewares/upload');
 
 router.get('/', protect, recipeController.getDataRecipe)
 router.get('/:id', protect, recipeController.getDetailRecipes)

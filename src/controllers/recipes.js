@@ -1,13 +1,7 @@
 /* eslint-disable no-undef */
 const { response } = require('../helpers/common');
 const recipeModels = require('../models/recipes');
-const cloudinary = require('cloudinary').v2
-
-cloudinary.config({ 
-    cloud_name: process.env.CLOUD_NAME, 
-    api_key: process.env.API_KEY, 
-    api_secret: process.env.API_SECRET 
-  });
+const upload = require('../helpers/cloudinary')
 
   const getDataRecipe = async(req,res) => {
     try {
@@ -47,32 +41,21 @@ cloudinary.config({
 
   const insertDataRecipe = async(req,res) => {
     try {
-      const { userID, tittle, ingredients } = req.body
+      const { userid, tittle, ingredients } = req.body
       const photo = req.file
-      const image = await cloudinary.uploader.upload(photo.path, { folder: 'Recipes/Food' })
       // console.log(req.file);
-      // const image = await cloudinary.uploader.upload(photo.path, { folder: 'Recipes/Food/Image' })
-      const dataRecipe = { userID, tittle, ingredients, photo: [image.secure_url]}
+      // console.log('1', photo);
+      const image = await upload(photo)
+      const dataRecipe = { userid, tittle, ingredients, photo: image.secure_url }
+      // console.log(dataRecipe);
       const result = await recipeModels.insertDataRecipe(dataRecipe)
+      // console.log('2', photo);
       response(res, result.data, 'success', 200, 'Insert Data Success')
     } catch (error) {
       console.log(error);
       res.send({message: 'error'})
     }
   }
-  // const insertDataRecipe = async(req,res) => {
-  //   try {
-  //     const { userID, name, tittle, ingredients } = req.body
-  //     const photo = req.file
-  //     const image = await cloudinary.uploader.upload(photo.path, { folder: 'Recipes/Food/Image' })
-  //     const dataRecipe = { userID, name, tittle, ingredients, photo: [image.secure_url] }
-  //     const result = await recipeModels.insertDataRecipe(dataRecipe)
-  //     response(res, result.data, 'success', 200, 'Insert Data Success')
-  //   } catch (error) {
-  //     console.log(error);
-  //     res.send({message: 'error'})
-  //   }
-  // }
 
   const deleteDataRecipe = async(req,res) => {
     try {
