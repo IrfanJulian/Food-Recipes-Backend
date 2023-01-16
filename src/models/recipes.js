@@ -13,13 +13,21 @@ const getDataRecipe = ({search, limit, offset, sortBy, sortList}) => {
     }) 
 }
 
+// const getDetailRecipes = (id) => {
+//     return pool.query(`SELECT recipes.*, users.name AS username FROM recipes INNER JOIN users ON recipes.userID=users.id WHERE recipes.id=${id}`)
+// }
+
 const getDetailRecipes = (id) => {
-    return pool.query(`SELECT recipes.*, users.name AS username FROM recipes INNER JOIN users ON recipes.userID=users.id WHERE recipes.id=${id}`)
+    return pool.query(`SELECT * FROM recipes WHERE id=${id}`)
+}
+
+const myRecipe = (id) => {
+    return pool.query(`SELECT * FROM recipes WHERE userid = '${id}'`)
 }
 
 const insertDataRecipe = (data) => {
-    const { userid, tittle, ingredients, photo } = data
-    return pool.query(`INSERT INTO recipes(userid, tittle, ingredients, photo)VALUES('${userid}', '${tittle}', '${ingredients}', '${photo}')`)
+    const { userid, tittle, ingredients, description,photo } = data
+    return pool.query(`INSERT INTO recipes(userid, tittle, ingredients, description, photo)VALUES('${userid}', '${tittle}', '${ingredients}', '${description}', '${photo}')`)
 }
 
 const deleteDataRecipe = (id) => {
@@ -35,5 +43,6 @@ module.exports = {
     insertDataRecipe,
     getDetailRecipes,
     deleteDataRecipe,
+    myRecipe,
     countDataRecipe
 }

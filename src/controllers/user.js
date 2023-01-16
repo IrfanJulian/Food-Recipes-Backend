@@ -75,6 +75,13 @@ const login = async(req,res) => {
     }
         dataUser.token = generateToken(payload)
         dataUser.refreshToken= generateRefreshToken(payload)
+        res.cookie('token', dataUser.token, {
+            httpOnly: true,
+            maxAge: 60*1000*60*12,
+            secure: false,
+            path: '/',
+            sameSite: 'Strict'
+        })
         response(res, dataUser, 'success', 200, 'login success')
 }
 

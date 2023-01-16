@@ -3,24 +3,28 @@ const { response } = require('../helpers/common')
 // eslint-disable-next-line no-undef
 let key = process.env.JWT_KEY
 
-const protect = (req,res,next) => {
-    try {
-        let token
-        if(req.headers.authorization){
-            let auth = req.headers.authorization
-            token = auth.split(' ')[1]
-            let decode = jwt.verify(token, key)
-            req.payload = decode
-            next()
-        } else {
-            return response(res, null, 'failed', 404, 'Server Need Token')
+const protect = (req,res,next) =>{
+    try{
+        // let token
+        // if(req.headers.authorization){
+        //     let auth = req.headers.authorization
+        //     token = auth.split(" ")[1]
+        let token = req.cookies.token
+        if(!token){
+            throw new Error('Need token')
         }
-    } catch (error) {
-        console.log(error)
-        if(error && error.name == 'JsonWebTokenError'){
+            let decode = jwt.verify(token,key)
+            req.payload = decode
+            return next()
+        // } else {
+        //     return response(res, null, 'failed', 404, 'Server Need Token')
+        // }
+    } catch(err) {
+        console.log(err)
+        if(err && err.name == 'JsonWebTokenError'){
             return response(res, null, 'failed', 404, 'Invalid Token')
-        } else if (error && error.name == 'TokenExpriredError'){
-            return response(res, null, 'failed', 404, 'Token Expired')
+        } else if (err && err.name == 'TokenExpriredError'){
+            return response(res, null, 'failed', 404, 'Invalid Token')
         } else {
             return response(res, null, 'failed', 404, 'Invalid Token')
         }

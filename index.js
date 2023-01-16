@@ -2,10 +2,12 @@ const express = require('express')
 const bodyParser = require('body-parser')
 require('dotenv').config()
 const cors = require('cors')
-const myCors = require('./src/middlewares/cors');
+const helmet = require('helmet')
+// const myCors = require('./src/middlewares/cors');
 const morgan = require('morgan')
 const xss = require('xss-clean')
 const mainRouter = require('./src/routes/index.js')
+const cookieParser = require('cookie-parser')
 
 const app = express();
 // eslint-disable-next-line no-undef
@@ -14,9 +16,19 @@ const port = process.env.PORT;
 app.use(bodyParser.json())
 app.use(express.urlencoded({extended: true}))
 app.use(xss())
-app.use(cors(myCors))
+app.use(cors({
+  credentials: true,
+  origin: 'http://localhost:3000',
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
+}))
 app.use(morgan('dev'))
-
+app.use(cookieParser())
+app.use(
+  helmet({
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: false,
+  })
+);
 
 
 app.use('/', mainRouter)

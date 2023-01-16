@@ -29,6 +29,16 @@ const upload = require('../helpers/cloudinary')
     }
   }
 
+  const myRecipe = async(req,res)=>{
+    const id = req.params.id
+    try {
+      const {rows} = await recipeModels.myRecipe(id)
+      response(res, rows, 'sucess', 200, 'get my recipe sucess');
+    } catch (error) {
+      res.json({message:'error', error})
+    }
+  }
+
   const getDetailRecipes = async(req,res) => {
     try {
       const id = req.params.id
@@ -41,12 +51,12 @@ const upload = require('../helpers/cloudinary')
 
   const insertDataRecipe = async(req,res) => {
     try {
-      const { userid, tittle, ingredients } = req.body
+      const { userid, tittle, ingredients, description } = req.body
       const photo = req.file
       // console.log(req.file);
       // console.log('1', photo);
       const image = await upload(photo)
-      const dataRecipe = { userid, tittle, ingredients, photo: image.secure_url }
+      const dataRecipe = { userid, tittle, ingredients, description, photo: image.secure_url }
       // console.log(dataRecipe);
       const result = await recipeModels.insertDataRecipe(dataRecipe)
       // console.log('2', photo);
@@ -72,5 +82,6 @@ const upload = require('../helpers/cloudinary')
     getDataRecipe,
     insertDataRecipe,
     deleteDataRecipe,
-    getDetailRecipes
+    getDetailRecipes,
+    myRecipe
   }
