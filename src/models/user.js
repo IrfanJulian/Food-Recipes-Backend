@@ -9,7 +9,7 @@ const findUserEmail = (email) => {
 }
 
 const getProfile = (id) => {
-    return pool.query(`SELECT * FROM users WHERE id = ${id}`)
+    return pool.query(`SELECT * FROM users WHERE id = '${id}'`)
 }
 
 const insertData = (data) => {
