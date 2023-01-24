@@ -3,7 +3,6 @@ const bodyParser = require('body-parser')
 require('dotenv').config()
 const cors = require('cors')
 const helmet = require('helmet')
-// const myCors = require('./src/middlewares/cors');
 const morgan = require('morgan')
 const xss = require('xss-clean')
 const mainRouter = require('./src/routes/index.js')
@@ -17,18 +16,27 @@ app.use(bodyParser.json())
 app.use(express.urlencoded({extended: true}))
 app.use(xss())
 app.use(cors({
-  credentials: true,
-  origin: 'http://localhost:3000',
-  methods: ['GET', 'POST', 'PUT', 'DELETE']
+  origin: ['http://localhost:3000'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
 }))
+app.use(
+  helmet.crossOriginResourcePolicy({ policy: 'cross-origin' })
+)
+// app.use(cors({
+//   credentials: true,
+//   origin: 'http://localhost:3000',
+//   methods: ['GET', 'POST', 'PUT', 'DELETE']
+// }))
 app.use(morgan('dev'))
 app.use(cookieParser())
-app.use(
-  helmet({
-    crossOriginEmbedderPolicy: false,
-    crossOriginResourcePolicy: false,
-  })
-);
+app.use(helmet())
+// app.use(
+//   helmet({
+//     crossOriginEmbedderPolicy: false,
+//     crossOriginResourcePolicy: false,
+//   })
+// );
 
 
 app.use('/', mainRouter)
