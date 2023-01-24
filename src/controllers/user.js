@@ -87,8 +87,8 @@ const login = async(req,res) => {
 
 const profile = async(req,res) => {
     try {
-        const email = req.payload.email
-        const { rows: [user] } = await userModels.findUserEmail(email)
+        const id = req.params.id
+        const { rows: [user] } = await userModels.getProfile(id)
         response(res, user, 'suuccess', 200, 'get profile success')
     } catch (error) {
         console.log(error);

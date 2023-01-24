@@ -8,6 +8,10 @@ const findUserEmail = (email) => {
     return pool.query(`SELECT * FROM users WHERE email='${email}'`)
 }
 
+const getProfile = (id) => {
+    return pool.query(`SELECT * FROM users WHERE id = ${id}`)
+}
+
 const insertData = (data) => {
     const { id, name, phone, email, password } = data
     return pool.query(`INSERT INTO users(id, name, phone, email, password)VALUES('${id}', '${name}', ${phone}, '${email}', '${password}')`)
@@ -31,6 +35,7 @@ module.exports = {
     insertData,
     updateData,
     deleteData,
-    findUserEmail
+    findUserEmail,
+    getProfile
     // myRecipe
 }
