@@ -108,7 +108,7 @@ const updateDataUser = async(req,res) => {
             id,
             photo: image.secure_url
         }
-        console.log(data);
+        // console.log(data);
         const result = await userModels.updateData(data)
         console.log(result);
         response(res, null, 'success', 200, 'Update Data Success')
