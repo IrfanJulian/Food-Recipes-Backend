@@ -22,8 +22,8 @@ const getDetailComment = async(req,res) => {
 
 const postComment = async(req,res) => {
     try {
-        // const { userid, recipeid, comment } = req.body
-        // const data = { userid, recipeid, comment }
+        // const { comment, userid, recipeid } = req.body
+        // const data = { comment, userid, recipeid }
         await communcationModels.addComment(req.body)
         response(res, null, 'success', 200, 'comment success')
     } catch (error) {

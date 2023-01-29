@@ -26,3 +26,7 @@ INSERT INTO recipes(userID, tittle, ingredients, photo)VALUES('212', 'delicious 
 CREATE TABLE users(id TEXT PRIMARY KEY, name TEXT, phone TEXT, email TEXT, password TEXT, photo TEXT DEFAULT '');
 
 CREATE TABLE recipes(id SERIAL PRIMARY KEY, tittle TEXT, ingredients TEXT, description TEXT, phone TEXT, photo TEXT, userid TEXT);
+
+CREATE TABLE communication(id SERIAL PRIMARY KEY, comment TEXT, userid TEXT, recipeid TEXT, liked INTEGER DEFAULT 0);
+
+SELECT communication.*, users.photo, users.name FROM communication INNER JOIN users ON users.id = communication.userid INNER JOIN recipes ON communication.recipeid = 2;

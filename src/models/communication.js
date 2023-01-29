@@ -5,13 +5,12 @@ const getAllComment = () =>{
 }
 
 const getDetailComment = (id) => {
-    return pool.query(`SELECT communication.comment, communication.liked, users.name, users.photo, recipes.tittle FROM communication INNER JOIN users ON communication.userid = users.id INNER JOIN recipes ON recipes.id = communication.recipeid WHERE communication.recipeid = ${id}`)
-    // return pool.query(`SELECT communication.comment, communication.liked, users.name, users.photo, recipes.tittle FROM communication INNER JOIN users ON communication.userid = users.id INNER JOIN recipes ON recipes.id = ${id}`)
+    return pool.query(`SELECT communication.comment, communication.liked, users.photo, users.name FROM communication INNER JOIN users ON users.id = communication.userid INNER JOIN recipes ON communication.recipeid = ${id}`)
 }
 
 const addComment = (data) => {
-    const {userid, recipeid, comment} = data
-    return pool.query(`INSERT INTO communication(userid, recipeid, comment)VALUES('${userid}', ${recipeid}, '${comment}')`)
+    const {comment, userid, recipeid} = data
+    return pool.query(`INSERT INTO communication(comment, userid, recipeid)VALUES('${comment}', '${userid}', ${recipeid})`)
 }
 
 module.exports = {
