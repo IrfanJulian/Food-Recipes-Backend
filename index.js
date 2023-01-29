@@ -16,7 +16,10 @@ app.use(bodyParser.json())
 app.use(express.urlencoded({extended: true}))
 app.use(xss())
 app.use(cors({
-  origin: [`http://localhost:3000`, `https://recipppe.netlify.app/`],
+  origin: [
+    `http://localhost:3000`
+    // `https://recipppe.netlify.app/`
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }))

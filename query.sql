@@ -30,3 +30,7 @@ CREATE TABLE recipes(id SERIAL PRIMARY KEY, tittle TEXT, ingredients TEXT, descr
 CREATE TABLE communication(id SERIAL PRIMARY KEY, comment TEXT, userid TEXT, recipeid TEXT, liked INTEGER DEFAULT 0);
 
 SELECT communication.*, users.photo, users.name FROM communication INNER JOIN users ON users.id = communication.userid INNER JOIN recipes ON communication.recipeid = 2;
+
+SELECT communication.*, users.name, users.photo FROM communication INNER JOIN users ON communication.userid=users.id INNER JOIN recipes ON communication.recipeid=2;
+
+SELECT name, photo, comment, liked FROM users RIGHT JOIN communication ON users.id = communication.userid WHERE communication.recipeid = recipes.id;
