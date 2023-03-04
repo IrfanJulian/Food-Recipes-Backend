@@ -13,8 +13,8 @@ const getProfile = (id) => {
 }
 
 const insertData = (data) => {
-    const { id, name, phone, email, password } = data
-    return pool.query(`INSERT INTO users(id, name, phone, email, password)VALUES('${id}', '${name}', ${phone}, '${email}', '${password}')`)
+    const { id, name, phone, email, password, otp } = data
+    return pool.query(`INSERT INTO users(id, name, phone, email, password, otp)VALUES('${id}', '${name}', ${phone}, '${email}', '${password}', '${otp}')`)
 }
 
 // const myRecipe = (id) => {
@@ -22,8 +22,8 @@ const insertData = (data) => {
 // }
 
 const updateData = (data) => {
-    const { id, photo } = data
-    return pool.query(`UPDATE users SET photo='${photo}' WHERE id='${id}'`)
+    const { id, name, photo } = data
+    return pool.query(`UPDATE users SET photo='${photo}', name='${name}' WHERE id='${id}'`)
 }
 
 const deleteData = (id) => {

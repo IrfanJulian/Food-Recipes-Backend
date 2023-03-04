@@ -56,7 +56,7 @@ const upload = require('../helpers/cloudinary')
       // console.log(req.file);
       // console.log('1', photo);
       const image = await upload(photo)
-      const dataRecipe = { userid, tittle, ingredients, description, photo: image.secure_url }
+      const dataRecipe = { userid, tittle, ingredients, description, photo: image.secure_url}
       // console.log(dataRecipe);
       const result = await recipeModels.insertDataRecipe(dataRecipe)
       // console.log('2', photo);

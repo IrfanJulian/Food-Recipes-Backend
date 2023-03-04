@@ -26,7 +26,7 @@ const myRecipe = (id) => {
 }
 
 const insertDataRecipe = (data) => {
-    const { userid, tittle, ingredients, description,photo } = data
+    const { userid, tittle, ingredients, description, photo } = data
     return pool.query(`INSERT INTO recipes(userid, tittle, ingredients, description, photo)VALUES('${userid}', '${tittle}', '${ingredients}', '${description}', '${photo}')`)
 }
 

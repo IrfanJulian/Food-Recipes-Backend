@@ -5,6 +5,7 @@ const cloudinary = require('cloudinary').v2
 const bcrypt = require('bcryptjs')
 const {v4: uuidv4} = require('uuid')
 const { generateToken, generateRefreshToken } = require('../helpers/auth')
+const { sendGmail } = require('../helpers/mailer')
 
 
 cloudinary.config({ 
@@ -34,23 +35,38 @@ const getDataUser = async(req,res)=> {
 //     }
 // }
 
-const insertDataUser = async(req,res) => {
+const insertDataUser = async(req, res) =>{
     try {
-        const { name, phone, email, password } = req.body
-        // console.log(req.body);
-        // const image = await cloudinary.uploader.upload(photo.path, { folder: 'Recipes/User' })
-            const salt = bcrypt.genSaltSync(10);
-            const passwordHash = bcrypt.hashSync(password, salt);
-            const filterEmail = await userModels.findUserEmail(email);
-            if(!filterEmail.rowCount){
-                let dataUser = { id: uuidv4(), name, phone, email, password: passwordHash }
-                const {data} = await userModels.insertData(dataUser)
-                response(res, data, 'success', 200, 'Insert Data Success')
-            }else{
-                res.send({message: 'Email is Already Exist'})
+        const dataUser = await userModels.findUserEmail(req.body.email)
+        const digits = "0123456789";
+        let otp = "";
+        // eslint-disable-next-line no-plusplus
+        for (let i = 0; i < 6; i++) {
+          otp += digits[Math.floor(Math.random() * 10)];
+        }
+        const salt = bcrypt.genSaltSync(10);
+        const passwordHash = bcrypt.hashSync(req.body.password, salt);
+        if(!dataUser.rowCount){
+            let data = {
+                id: uuidv4(),
+                name: req.body.name,
+                email: req.body.email,
+                password: passwordHash,
+                phone: req.body.phone,
+                otp
             }
+            let result = await userModels.insertData(data)
+            if(result){
+                await sendGmail(data.email, data.otp)
+                return res.send({status: 200, message: 'success check email'})
+            }
+            // console.log(data);
+            res.send({status: 200, message: 'add data success'})
+        }else{
+            res.send({message: 'email is already exist'})
+        }
     } catch (error) {
-        console.log(error);
+        console.log(error)
         res.send({message: 'error'})
     }
 }
@@ -96,9 +112,22 @@ const profile = async(req,res) => {
     }
 }
 
+const getByEmail = async(req,res) => {
+    try {
+        const email = req.params.email
+        const { rows: [user] } = await userModels.findUserEmail(email)
+        console.log(user);
+        response(res, user, 'success', 200, 'get data by email success')
+    } catch (error) {
+        console.log(error);
+        res.json({message: 'error', error})
+    }
+}
+
 const updateDataUser = async(req,res) => {
     try {
         const id = req.params.id
+        const name = req.body.name
         // console.log(id);
         // const { name, phone, email, password } = req.body
         // console.log(req.body);
@@ -106,6 +135,7 @@ const updateDataUser = async(req,res) => {
         const image = await cloudinary.uploader.upload(photo.path, { folder: 'Recipes/User' })
         const data = {
             id,
+            name,
             photo: image.secure_url
         }
         // console.log(data);
@@ -135,5 +165,6 @@ module.exports = {
     deleteDataUser,
     login,
     profile,
+    getByEmail
     // myRecipes
 }
