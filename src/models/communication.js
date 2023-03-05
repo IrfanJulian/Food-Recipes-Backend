@@ -5,7 +5,7 @@ const getAllComment = () =>{
 }
 
 const getDetailComment = (id) => {
-    return pool.query(`SELECT name, photo, comment, liked FROM users RIGHT JOIN communication ON users.id = communication.userid WHERE communication.recipeid = ${id}`)
+    return pool.query(`SELECT * FROM communication WHERE recipeid = ${id}`)
 }
 
 const addComment = (data) => {
