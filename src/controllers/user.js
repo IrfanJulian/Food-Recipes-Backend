@@ -71,6 +71,48 @@ const insertDataUser = async(req, res) =>{
     }
 }
 
+const forgotPassword = async (req,res) => {
+    try {
+        const email = req.body.email
+        const dataUser = await userModels.findUserEmail(email)
+        const digits = "0123456789";
+        let otp = "";
+        for (let i = 0; i < 6; i++) {
+            otp += digits[Math.floor(Math.random() * 10)];
+        }
+        if(dataUser){
+            let result = await userModels.forgotPassword(email, otp)
+            if(result){
+                console.log('ini nodemailer',otp);
+                await sendGmail(email, otp)
+                return res.send({status: 200, message: 'success check email'})
+            }
+            return res.send({message: 'success'})
+        }else{
+            return res.send({message: 'error'})
+        }
+    } catch (error) {
+        console.log(error);
+        return response(res, null, 'error', 400, 'failed')
+    }
+}
+
+const resetPassword = async(req, res) => {
+    const email = req.params.email
+    const salt = bcrypt.genSaltSync(10);
+    const passwordHash = bcrypt.hashSync(req.body.password, salt);
+    try {
+        const dataUser = await userModels.findUserEmail(email)
+        if(dataUser){
+            await userModels.resetPassword(email, passwordHash)
+            response(res, null, 'success', 200, 'password updated')
+        }
+    } catch (error) {
+        console.log(error);
+        return response(res, null, 'error', 400, 'failed')
+    }
+}
+
 const login = async(req,res) => {
     const {email, password} = req.body
     const {rows: [dataUser]} = await userModels.findUserEmail(email)
@@ -165,6 +207,7 @@ module.exports = {
     deleteDataUser,
     login,
     profile,
-    getByEmail
-    // myRecipes
+    getByEmail,
+    forgotPassword,
+    resetPassword
 }

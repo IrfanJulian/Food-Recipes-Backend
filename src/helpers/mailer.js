@@ -24,7 +24,7 @@ const sendGmail = async(email, subject) => {
       from: process.env.MAIL_USERNAME,
       to: email,
       subject: `Verification Account`,
-      text: `This is your OTP code ${subject} you can go back to Izdihar Website to login`
+      text: `This is your OTP code ${subject} you can go back to our Website to login`
     })
     console.log('email sent');
     console.log(info.response);
