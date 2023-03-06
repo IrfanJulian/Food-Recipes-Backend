@@ -34,3 +34,5 @@ SELECT communication.*, users.photo, users.name FROM communication INNER JOIN us
 SELECT communication.*, users.name, users.photo FROM communication INNER JOIN users ON communication.userid=users.id INNER JOIN recipes ON communication.recipeid=2;
 
 SELECT name, photo, comment, liked FROM users RIGHT JOIN communication ON users.id = communication.userid WHERE communication.recipeid = recipes.id;
+
+https://shy-gray-cockroach-kilt.cyclic.app/

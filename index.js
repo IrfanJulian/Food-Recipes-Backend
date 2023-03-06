@@ -16,7 +16,7 @@ app.use(bodyParser.json())
 app.use(express.urlencoded({extended: true}))
 app.use(xss())
 app.use(cors({
-  origin: `https://recipppe.netlify.app/`,
+  origin: 'https://foodrecipes-app.vercel.app/',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }))
